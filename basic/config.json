@@ -1,0 +1,35 @@
+{
+    "blocks": null,
+    "contracts": [
+        {
+            "Conditions": "ContractConditions(\"MainCondition\")",
+            "Name": "Profile_Edit"
+        }
+    ],
+    "menus": [
+        {
+            "Conditions": "ContractAccess(\"@1EditMenu\")",
+            "Name": "default_menu"
+        }
+    ],
+    "pages": [
+        {
+            "Conditions": "ContractConditions(\"MainCondition\")",
+            "Name": "default_ecosystem_page",
+            "Menu": "default_menu"
+        }
+    ],
+    "tables": [
+        {
+            "Name": "votings",
+            "Permissions": "{\"insert\": \"true\", \"update\": \"true\", \"new_column\": \"true\"}"
+        }
+    ],
+    "parameters": [
+        {
+            "Conditions": "ContractConditions(\"MainCondition\")",
+            "Name": "notification_closure"
+        }
+    ],
+    "name": "Basic application"
+}
