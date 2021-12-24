@@ -1,21 +1,22 @@
 {
-    "blocks": null,
+    "name": "Basic application",
+    "snippets": null,
     "contracts": [
         {
-            "Conditions": "ContractConditions(\"MainCondition\")",
-            "Name": "Profile_Edit"
+            "Name": "Profile_Edit",
+            "Conditions": "ContractConditions(\"MainCondition\")"
         }
     ],
     "menus": [
         {
-            "Conditions": "ContractAccess(\"@1EditMenu\")",
-            "Name": "default_menu"
+            "Name": "default_menu",
+            "Conditions": "ContractAccess(\"@1EditMenu\")"
         }
     ],
     "pages": [
         {
-            "Conditions": "ContractConditions(\"MainCondition\")",
             "Name": "default_ecosystem_page",
+            "Conditions": "ContractConditions(\"MainCondition\")",
             "Menu": "default_menu"
         }
     ],
@@ -27,9 +28,8 @@
     ],
     "parameters": [
         {
-            "Conditions": "ContractConditions(\"MainCondition\")",
-            "Name": "notification_closure"
+            "Name": "notification_closure",
+            "Conditions": "ContractConditions(\"MainCondition\")"
         }
-    ],
-    "name": "Basic application"
+    ]
 }

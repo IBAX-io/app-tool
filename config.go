@@ -23,11 +23,11 @@ func readConfig(out *exportFile) {
 		out.Name = config.Name
 		out.Conditions = config.Conditions
 	}
-	if len(config.Blocks) > 0 {
-		for c := range config.Blocks {
-			for o := range out.Blocks {
-				if config.Blocks[c].Name == out.Blocks[o].Name {
-					out.Blocks[o].Conditions = config.Blocks[c].Conditions
+	if len(config.Snippets) > 0 {
+		for c := range config.Snippets {
+			for o := range out.Snippets {
+				if config.Snippets[c].Name == out.Snippets[o].Name {
+					out.Snippets[o].Conditions = config.Snippets[c].Conditions
 				}
 			}
 		}
@@ -108,9 +108,9 @@ func convertDataConf(conf dataConf) (res configFile) {
 	res.Conditions = conf.Conditions
 	for _, item := range conf.Data {
 		switch item.Type {
-		case typeBlock:
+		case typeSnippet:
 			item.Type = ""
-			res.Blocks = append(res.Blocks, item)
+			res.Snippets = append(res.Snippets, item)
 		case typeMenu:
 			item.Type = ""
 			res.Menus = append(res.Menus, item)

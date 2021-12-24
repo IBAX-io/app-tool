@@ -14,22 +14,22 @@ const (
 	eJSON = ".json"
 	eCSV  = ".csv"
 
-	dirBlock = "blocks"
-	dirMenu  = "menus"
-	dirLang  = "languages"
-	dirTable = "tables"
-	dirParam = "parameters"
-	dirData  = "data"
-	dirPage  = "pages"
-	dirCon   = "contracts"
+	dirSnippet = "snippets"
+	dirMenu    = "menus"
+	dirLang    = "languages"
+	dirTable   = "tables"
+	dirParam   = "parameters"
+	dirData    = "data"
+	dirPage    = "pages"
+	dirCon     = "contracts"
 
-	typeBlock = "blocks"
-	typeMenu  = "menu"
-	typeLang  = "languages"
-	typeTable = "tables"
-	typeParam = "app_params"
-	typePage  = "pages"
-	typeCon   = "contracts"
+	typeSnippet = "snippets"
+	typeMenu    = "menu"
+	typeLang    = "languages"
+	typeTable   = "tables"
+	typeParam   = "app_params"
+	typePage    = "pages"
+	typeCon     = "contracts"
 
 	defaultCondition  = "ContractConditions(\"MainCondition\")"
 	defaultMenu       = "default_menu"
@@ -38,13 +38,13 @@ const (
 	separator         = string(os.PathSeparator)
 	structFileName    = "struct.dot"
 
-	helpMsg = "please choose directory for packing, example:\n    ap dirfiles" + separator + "\nor file to unpacking, example:\n    ap file.json"
+	helpMsg = "please choose directory for packing, example:\n    ap dirfiles" + separator + "\nor file to unpacking, example:\n    app-tool file.json"
 )
 
 type configFile struct {
 	Name       string       `json:"name,omitempty"`
 	Conditions string       `json:"conditions,omitempty"`
-	Blocks     []importConf `json:"blocks"`
+	Snippets   []importConf `json:"snippets"`
 	Contracts  []importConf `json:"contracts"`
 	Menus      []importConf `json:"menus"`
 	Pages      []importConf `json:"pages"`
@@ -55,7 +55,7 @@ type configFile struct {
 type exportFile struct {
 	Name       string         `json:"name,omitempty"`
 	Conditions string         `json:"conditions,omitempty"`
-	Blocks     []importStruct `json:"blocks"`
+	Snippets   []importStruct `json:"snippets"`
 	Contracts  []importStruct `json:"contracts"`
 	Data       []dataStruct   `json:"data"`
 	Languages  []importStruct `json:"languages"`
@@ -66,8 +66,8 @@ type exportFile struct {
 }
 
 func (e *exportFile) cleaning() {
-	for i := range e.Blocks {
-		e.Blocks[i].Type = ""
+	for i := range e.Snippets {
+		e.Snippets[i].Type = ""
 	}
 	for i := range e.Contracts {
 		e.Contracts[i].Type = ""
@@ -90,7 +90,7 @@ func (e *exportFile) cleaning() {
 }
 
 type importFile struct {
-	Blocks     []commonStruct `json:"blocks"`
+	Snippets   []commonStruct `json:"snippets"`
 	Contracts  []commonStruct `json:"contracts"`
 	Data       []dataStruct   `json:"data"`
 	Languages  []commonStruct `json:"languages"`
@@ -112,7 +112,7 @@ func (item *importStruct) fullName() string {
 }
 func (item *importStruct) ext() string {
 	switch item.Type {
-	case typeBlock:
+	case typeSnippet:
 		return ePTL
 	case typeMenu:
 		return ePTL
@@ -169,7 +169,7 @@ type commonStruct struct {
 type testFormatStruct struct {
 	Name       string         `json:"name,omitempty"`
 	Conditions string         `json:"conditions,omitempty"`
-	Blocks     []importStruct `json:"blocks,omitempty"`
+	Snippets   []importStruct `json:"snippets,omitempty"`
 	Contracts  []importStruct `json:"contracts,omitempty"`
 	Languages  []importStruct `json:"languages,omitempty"`
 	Menus      []importStruct `json:"menus,omitempty"`
@@ -182,7 +182,7 @@ func (t *testFormatStruct) len() (l int) {
 	if t.Name != "" {
 		l++
 	}
-	if t.Blocks != nil {
+	if t.Snippets != nil {
 		l++
 	}
 	if t.Contracts != nil {

@@ -38,7 +38,7 @@ func unpackJSON(filename string) {
 		}
 		unpackStruct(file.Contracts, eSIM, dirCon)
 		unpackStruct(file.Menus, ePTL, dirMenu)
-		unpackStruct(file.Blocks, ePTL, dirBlock)
+		unpackStruct(file.Snippets, ePTL, dirSnippet)
 		unpackStruct(file.Pages, ePTL, dirPage)
 		unpackStruct(file.Tables, eJSON, dirTable)
 		unpackStruct(file.Parameters, eCSV, dirParam)

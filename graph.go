@@ -14,28 +14,28 @@ import (
 
 var (
 	graphMap      = map[string][]string{}
-	dirsGraph     = []string{dirMenu, dirPage, dirBlock, dirCon, dirTable}
+	dirsGraph     = []string{dirMenu, dirPage, dirSnippet, dirCon, dirTable}
 	graphDot      = dot.NewGraph("G")
 	contractsList = []string{}
 	labelType     = "label"
 	nodeColors    = map[string]string{
-		dirPage:  "green",
-		dirCon:   "red",
-		dirMenu:  "blue",
-		dirBlock: "green",
+		dirPage:    "green",
+		dirCon:     "red",
+		dirMenu:    "blue",
+		dirSnippet: "green",
 	}
 	nodeShapes = map[string]string{
-		dirPage:  "record",
-		dirCon:   "record",
-		dirMenu:  "record",
-		dirBlock: "record",
+		dirPage:    "record",
+		dirCon:     "record",
+		dirMenu:    "record",
+		dirSnippet: "record",
 	}
-	page2Contr   = regexp.MustCompile("\\(.*?Contract:\\s*@?1?(\\w+)")
-	page2Page    = regexp.MustCompile("\\(.*?Page:\\s*@?1?(\\w+)")
-	tableWrite   = regexp.MustCompile("(?:DBInsert|DBUpdate|DBUpdateExt)\\(\\s*[\"]@?1?(\\w+?)[\"]")
-	tableRead    = regexp.MustCompile("(?:DBFind|DBRow)\\(.*?[\"\x60']?@?1?(\\w+)['\x60\",)]")
-	page2Table   = regexp.MustCompile("(?:DBFind)\\(.*?[\"\x60']?@?1?(\\w+)['\x60\",)]")
-	includeBlock = regexp.MustCompile("Include\\(\\s*Name:\\s*@?1?(.*?)[,\\s\\)]|Include\\(\\s*@?1?([^:]*?)[\\),\\s]")
+	page2Contr     = regexp.MustCompile("\\(.*?Contract:\\s*@?1?(\\w+)")
+	page2Page      = regexp.MustCompile("\\(.*?Page:\\s*@?1?(\\w+)")
+	tableWrite     = regexp.MustCompile("(?:DBInsert|DBUpdate|DBUpdateExt)\\(\\s*[\"]@?1?(\\w+?)[\"]")
+	tableRead      = regexp.MustCompile("(?:DBFind|DBRow)\\(.*?[\"\x60']?@?1?(\\w+)['\x60\",)]")
+	page2Table     = regexp.MustCompile("(?:DBFind)\\(.*?[\"\x60']?@?1?(\\w+)['\x60\",)]")
+	includeSnippet = regexp.MustCompile("Include\\(\\s*Name:\\s*@?1?(.*?)[,\\s\\)]|Include\\(\\s*@?1?([^:]*?)[\\),\\s]")
 )
 
 func createGraph(filename string) {
@@ -134,8 +134,8 @@ func createNodeWithEdges(gs *graphStruct) {
 		createNodes(node, page2Contr, gs, dirCon, revert)
 		createNodes(node, page2Table, gs, dirTable, true)
 		createNodes(node, page2Page, gs, dirPage, revert)
-		createNodes(node, includeBlock, gs, dirBlock, revert)
-	case dirBlock:
+		createNodes(node, includeSnippet, gs, dirSnippet, revert)
+	case dirSnippet:
 		createNodes(node, page2Contr, gs, dirCon, revert)
 		createNodes(node, page2Table, gs, dirTable, true)
 		createNodes(node, page2Page, gs, dirPage, revert)
@@ -188,7 +188,7 @@ func createNode(parentNode *dot.Node, nameOrig, dir string, gs *graphStruct, rev
 		// edge.Set("color", nodeColors[gs.Dir])
 	}
 
-	if dir == dirBlock {
+	if dir == dirSnippet {
 		edge.Set(labelType, "include")
 	}
 

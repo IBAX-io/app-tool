@@ -34,8 +34,8 @@ func packJSON(path string) {
 		if sf.IsDir() {
 			dir := packDir(fpath)
 			switch fname {
-			case dirBlock:
-				out.Blocks = append(out.Blocks, dir.Blocks...)
+			case dirSnippet:
+				out.Snippets = append(out.Snippets, dir.Snippets...)
 			case dirMenu:
 				out.Menus = append(out.Menus, dir.Menus...)
 			case dirLang:
@@ -66,7 +66,7 @@ func packJSON(path string) {
 			data := dataFile{}
 			data.Name = out.Name
 			data.Conditions = out.Conditions
-			data.Data = append(data.Data, out.Blocks...)
+			data.Data = append(data.Data, out.Snippets...)
 			data.Data = append(data.Data, out.Menus...)
 			data.Data = append(data.Data, out.Languages...)
 			data.Data = append(data.Data, out.Tables...)
@@ -99,7 +99,7 @@ func packJSON(path string) {
 	}
 }
 func packDir(path string) (out exportFile) {
-	out.Blocks = []importStruct{}
+	out.Snippets = []importStruct{}
 	out.Contracts = []importStruct{}
 	out.Data = []dataStruct{}
 	out.Languages = []importStruct{}
@@ -130,10 +130,10 @@ func packDir(path string) (out exportFile) {
 				el := encodeStd(path, fname)
 				el.Type = typeMenu
 				out.Menus = append(out.Menus, el)
-			case fdir == dirBlock || fdir == typeBlock:
+			case fdir == dirSnippet || fdir == typeSnippet:
 				el := encodeStd(path, fname)
-				el.Type = typeBlock
-				out.Blocks = append(out.Blocks, el)
+				el.Type = typeSnippet
+				out.Snippets = append(out.Snippets, el)
 			default:
 				el := encodePage(path, fname)
 				el.Type = typePage
@@ -295,7 +295,7 @@ func textContainsContract(text, name string) bool {
 	return false
 }
 func countEntries(file exportFile) (count int) {
-	return len(file.Blocks) +
+	return len(file.Snippets) +
 		len(file.Contracts) +
 		len(file.Data) +
 		len(file.Languages) +

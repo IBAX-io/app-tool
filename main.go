@@ -18,7 +18,7 @@ var (
 	singleSeparate bool
 	importNew      bool
 	withGraph      bool
-	dirs           = []string{dirBlock, dirMenu, dirLang, dirTable, dirParam, dirData, dirPage, dirCon}
+	dirs           = []string{dirSnippet, dirMenu, dirLang, dirTable, dirParam, dirData, dirPage, dirCon}
 )
 
 func main() {
