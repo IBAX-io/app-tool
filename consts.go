@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	currentVersion = "0.9.14"
+	currentVersion = "0.9.15"
 	currentTitle   = "Applications Packager " + currentVersion
 
 	eSIM  = ".sim"
