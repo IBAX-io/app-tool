@@ -11,20 +11,25 @@ import (
 var (
 	outputName     string
 	inputName      string
-	unpackMode     bool
-	packMode       bool
+	unpackMode     bool //json to dir
+	packMode       bool //dir to json
 	debug          bool
 	version        bool
 	singleSeparate bool
 	importNew      bool
 	withGraph      bool
+	split          bool
+	number         uint
 	dirs           = []string{dirSnippet, dirMenu, dirLang, dirTable, dirParam, dirData, dirPage, dirCon}
 )
 
-func main() {
+func init() {
 	flag.BoolVar(&unpackMode, "unpack", false, "-u, unpacking mode")
 	flag.StringVar(&inputName, "input", ".", "-i, path for input files, filename for pack and dirname/ (slashed) for unpack")
 	flag.StringVar(&outputName, "output", "output", "-o, output filename for JSON if input file name not pointed")
+
+	flag.BoolVar(&split, "s", false, "split json file by type")
+	flag.UintVar(&number, "n", 0, "split json file by number")
 
 	// shorthand
 	flag.StringVar(&outputName, "o", "output", "-output")
@@ -33,8 +38,10 @@ func main() {
 	flag.BoolVar(&version, "v", false, "-version")
 	flag.BoolVar(&debug, "d", false, "debug")
 	flag.BoolVar(&withGraph, "g", false, "make graphical structure in dot-file")
-	flag.Parse()
+}
 
+func main() {
+	flag.Parse()
 	args := flag.Args()
 	if argsCount := len(args); argsCount == 0 {
 		// without args run gui
@@ -74,9 +81,12 @@ func checkOutput() {
 		pLen := len(parts)
 		outputName = parts[pLen-1]
 		if unpackMode {
-			ext := filepath.Ext(outputName)
-			outputName = outputName[:len(outputName)-len(ext)]
-			outputName = outputName + separator
+			if !split {
+				ext := filepath.Ext(outputName)
+				outputName = outputName[:len(outputName)-len(ext)]
+				outputName = outputName + separator
+			}
+
 		} else {
 			if strings.HasSuffix(inputName, separator) {
 				outputName = parts[pLen-2]
@@ -92,7 +102,7 @@ func checkOutput() {
 			fmt.Println(helpMsg)
 			return
 		}
-		if !strings.HasSuffix(outputName, separator) {
+		if !strings.HasSuffix(outputName, separator) && !split {
 			outputName = outputName + separator
 		}
 		if debug {
@@ -118,6 +128,19 @@ func writeFileString(filename, content string) {
 	outFile, err := os.Create(filepath.Join(outputName, filename))
 	if err != nil {
 		// fmt.Println("error write file:", err)
+		return
+	}
+	defer outFile.Close()
+	if _, err := outFile.WriteString(content); err != nil {
+		fmt.Println(err)
+		return
+	}
+}
+
+func writeFileString2(filename, content string) {
+	outFile, err := os.Create(filepath.Join(filename))
+	if err != nil {
+		fmt.Println("error write file:", err)
 		return
 	}
 	defer outFile.Close()
