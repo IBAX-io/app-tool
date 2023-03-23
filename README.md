@@ -46,3 +46,14 @@ $ ./app-tool basic/
 ```
 
 The **basic.json** folder is generated in the current directory
+
+### 3. Split json file by number
+
+Execute the command
+```
+$ ./app-tool -s -n 40 basic.json
+
+//output:
+   basic1.json
+   basic2.json 
+```
