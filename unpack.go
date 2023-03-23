@@ -103,6 +103,20 @@ func unpackDataFile(items []importStruct) {
 }
 
 func splitDataFile(items dataFile) {
+	segments := splitArray(items.Data, int64(number))
+	for i := 0; i < len(segments); i++ {
+		split := segments[i]
+		data := dataFile{}
+		data.Name = items.Name
+		data.Conditions = items.Conditions
+		data.Data = append(data.Data, split...)
+		result, _ := _JSONMarshal(data, true)
+		ext := filepath.Ext(outputName)
+		path := outputName[:len(outputName)-len(ext)] + strconv.Itoa(i+1) + ext
+		writeFileString2(path, string(result))
+	}
+	return
+	// sub dir split.
 	var tp = make(map[string][]importStruct)
 	for _, out := range items.Data {
 		var path string
