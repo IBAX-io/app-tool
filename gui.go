@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/andlabs/ui"
+	_ "github.com/andlabs/ui/winmanifest"
 )
 
 // SimpleGui - using if main program run without arguments
