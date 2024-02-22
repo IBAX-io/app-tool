@@ -3,10 +3,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/spkg/bom"
 	"os"
 	"path/filepath"
 	"strconv"
+
+	"github.com/spkg/bom"
 )
 
 func unpackJSON(filename string) {
@@ -63,6 +64,7 @@ func unpackJSON(filename string) {
 		abspath := filepath.Join(abs, structFileName)
 		createGraph(abspath)
 	}
+	fmt.Println("unpack complete!\noutput dir:", outputName)
 }
 
 func unpackStruct(items []commonStruct, tail, dir string) {
@@ -96,6 +98,11 @@ func unpackDataFile(items []importStruct) {
 			value = item.Columns
 		case dirLang:
 			value = item.Trans
+		case dirCon:
+			err := ParserGrammarBase(value)
+			if err != nil {
+				panic(err)
+			}
 		}
 		fullName := filepath.Join(item.dir(), item.fullName())
 		writeFileString(fullName, value)

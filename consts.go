@@ -139,6 +139,7 @@ type dataConf struct {
 }
 
 type importStruct struct {
+	FullPath     string `json:",omitempty"`
 	Name         string `json:",omitempty"`
 	Confirmation string `json:",omitempty"`
 	Conditions   string `json:",omitempty"`

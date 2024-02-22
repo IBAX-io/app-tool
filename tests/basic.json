@@ -2,12 +2,14 @@
     "name": "Basic application",
     "data": [
         {
+            "FullPath": "tests/basic/snippets/snippet.ptl",
             "Name": "snippet",
             "Conditions": "ContractConditions(\"MainCondition\")",
             "Value": "SetTitle(snippet)",
             "Type": "snippets"
         },
         {
+            "FullPath": "tests/basic/menus/default_menu.ptl",
             "Name": "default_menu",
             "Conditions": "ContractAccess(\"@1EditMenu\")",
             "Value": "MenuItem(Title:$profile$, Page:profile_view, Icon:\"fa icon-user\")\nMenuItem(Title:$membership$, Page:members_list, Icon:\"fa icon-people\")\nMenuGroup(Title:$notifications$, Icon:\"icon-arrow-right\"){\n    MenuItem(Title:$single_notifics$, Page:notifications_single, Icon:\"fa fa-bell-o\")\n    MenuItem(Title:$role_notifics$, Page:notifications_roles, Icon:\"fa fa-bullhorn\")\n    MenuItem(Title:$test_page$, Page:notifications_testpage, Icon:\"icon-settings\")\n}\nMenuItem(Title:$roles$, Page:roles_list, Icon:\"fa fa-list-ul\")\nMenuGroup(Title:$voting$, Icon:\"icon-arrow-right\"){\n    MenuItem(Title:$voting$, Page:voting_list, Icon:\"fa fa-edit\")\n}",
@@ -20,6 +22,7 @@
             "Type": "tables"
         },
         {
+            "FullPath": "tests/basic/app_params/notification_closure.csv",
             "Name": "notification_closure",
             "Conditions": "ContractConditions(\"MainCondition\")",
             "Value": "single,multiple",
@@ -33,9 +36,10 @@
             "Type": "pages"
         },
         {
+            "FullPath": "tests/basic/contracts/Profile_Edit.sim",
             "Name": "Profile_Edit",
             "Conditions": "ContractConditions(\"MainCondition\")",
-            "Value": "contract Profile_Edit {\n    data {\n        member_name string\n        member_image bytes \"file\"\n        information string \"optional\"\n    }\n\n    conditions {\n        var app_name string\n        app_name = \"Basic application\" \n\n        $member_map = DBFind(\"members\").Where(\"id = $\", $key_id).Row()\n        $app_id = DBFind(\"applications\").Where(\"name = $ AND deleted = 0\", app_name).One(\"id\")\n\n        if !$member_map {\n            // check member_name \n            $member_id = DBFind(\"members\").Where(\"member_name = $\", $member_name).One(\"id\")\n            if $member_id {\n                warning \"This member name is busy. Enter another member name, please\"\n            }\n        }\n    }\n\n    action {\n        var memberInfo map\n        var image_id int\n        var image_name string\n        image_name = \"avatar\" \n\n        if $member_map {\n            image_id = Int($member_map[\"image_id\"]) \n            image_id = @1UploadBinary(\"Name,Data,ApplicationId\", image_name, $member_image, Int($app_id))\n            DBUpdate(\"members\", Int($member_map[\"id\"]), \"member_info->information,image_id\", $information, image_id)\n        } else {\n            memberInfo[\"information\"] = $information\n            image_id = @1UploadBinary(\"Name,Data,ApplicationId\", image_name, $member_image, Int($app_id))\n            DBInsert(\"members\", \"id,member_name,image_id,member_info\", $key_id, $member_name, image_id, memberInfo)\n        }\n    }\n}",
+            "Value": "contract Profile_Edit {\n    data {\n        member_name string\n        member_image bytes \"file\"\n        information string \"optional\"\n    }\n\n    conditions {\n        var app_name string\n        app_name = \"Basic application\"\n\n        $member_map = DBFind(\"members\").Where(\"id = $\", $key_id).Row()\n        $app_id = DBFind(\"applications\").Where(\"name = $ AND deleted = 0\", app_name).One(\"id\")\n/**\n* dadada\n*/\n        if !$member_map {\n            // check member_name\n            $member_id = DBFind(\"members\").Where(\"member_name = $\", $member_name).One(\"id\")\n            if $member_id {\n                warning \"This member name is busy. Enter another member name, please\"\n            }\n        }\n    }\n\n    action {\n        var memberInfo map\n        var image_id int\n        var image_name string\n        image_name = \"avatar\"\n\n        if $member_map {\n            image_id = Int($member_map[\"image_id\"])\n            image_id = @1UploadBinary(\"Name,Data,ApplicationId\", image_name, $member_image, Int($app_id))\n            DBUpdate(\"members\", Int($member_map[\"id\"]), \"member_info->information,image_id\", $information, image_id)\n        } else {\n            memberInfo[\"information\"] = $information\n            image_id = @1UploadBinary(\"Name,Data,ApplicationId\", image_name, $member_image, Int($app_id))\n            DBInsert(\"members\", \"id,member_name,image_id,member_info\", $key_id, $member_name, image_id, memberInfo)\n        }\n    }\n}",
             "Type": "contracts"
         }
     ]

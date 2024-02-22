@@ -1,6 +1,7 @@
 # Applications Packager
 
-G and Chain files packager for import into the Ecosystems created in the IBAX blockchain.
+## Description
+
 Utilite that can convert import json bundle from/to files of sim, ptl, csv, json.
 
 ### struct.dot
@@ -28,7 +29,7 @@ Binary files can be found in the current directory
 
 Execute the command
 
-```
+```shell
 $ ./app-tool basic.json
 ```
 
@@ -41,7 +42,7 @@ The **basic** folder is generated in the current directory
 and the **config.json** structure in the directory look like *./app-tool/basic/config.json*.
 
 Execute the command
-```
+```shell
 $ ./app-tool basic/
 ```
 
@@ -49,11 +50,37 @@ The **basic.json** folder is generated in the current directory
 
 ### 3. Split json file by number
 
-Execute the command
-```
+Execute the command, where **40** - number of files.
+```shell
 $ ./app-tool -s -n 40 basic.json
 
-//output:
+output:
    basic1.json
    basic2.json 
+```
+
+## Command line options
+
+if you invoke the command without line arguments, the help will be displayed.
+
+```shell
+$ ./app-tool -h
+Usage of ./app-tool:
+  -d    debug
+  -g    make graphical structure in dot-file
+  -i string
+        input (default ".")
+  -input string
+        -i, path for input files, filename for pack and dirname/ (slashed) for unpack (default ".")
+  -n uint
+        split json file by number
+  -o string
+        -output (default "output")
+  -output string
+        -o, output filename for JSON if input file name not pointed (default "output")
+  -s    split json file by type
+  -u    -unpack
+  -unpack
+        -u, unpacking mode
+  -v    -version
 ```

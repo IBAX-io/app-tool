@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -57,7 +56,7 @@ func createGraph(filename string) {
 	graphList := []graphStruct{}
 	dir := filepath.Dir(filename)
 	dirAbs, _ := filepath.Abs(dir)
-	files, err := ioutil.ReadDir(dirAbs)
+	files, err := os.ReadDir(dirAbs)
 	if err != nil {
 		return
 	}
@@ -89,7 +88,7 @@ func createGraph(filename string) {
 }
 
 func dirToGraph(path string) (out []graphStruct) {
-	files, err := ioutil.ReadDir(path)
+	files, err := os.ReadDir(path)
 	if err != nil {
 		return
 	}

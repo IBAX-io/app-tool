@@ -3,14 +3,14 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 )
 
 func readConfig(out *exportFile) {
 	config := exportFile{}
 	absConfPath, _ := filepath.Abs(inputName)
-	bs, err := ioutil.ReadFile(filepath.Join(absConfPath, configName))
+	bs, err := os.ReadFile(filepath.Join(absConfPath, configName))
 	if err != nil {
 		if debug {
 			fmt.Println("config file not found. used default values")

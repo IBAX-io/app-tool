@@ -2,3 +2,5 @@
 .DS_Store
 .vscode
 app-tool
+.antlr
+/gen

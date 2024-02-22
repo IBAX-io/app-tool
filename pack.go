@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -13,9 +12,10 @@ import (
 
 func packJSON(path string) {
 	out := packDir(path)
-
+	var arr []string
+	arr = append(arr)
 	path = filepath.Dir(path)
-	files, err := ioutil.ReadDir(path)
+	files, err := os.ReadDir(path)
 	if err != nil {
 		return
 	}
@@ -51,6 +51,12 @@ func packJSON(path string) {
 			case dirPage:
 				out.Pages = append(out.Pages, dir.Pages...)
 			case dirCon:
+				for _, cont := range dir.Contracts {
+					err := ParserGrammarFile(cont.FullPath)
+					if err != nil {
+						panic(err)
+					}
+				}
 				out.Contracts = append(out.Contracts, dir.Contracts...)
 			}
 		}
@@ -96,6 +102,7 @@ func packJSON(path string) {
 			abspath := filepath.Join(abs, structFileName)
 			createGraph(abspath)
 		}
+		fmt.Println("pack complete!\noutput file:", outputName)
 	}
 }
 func packDir(path string) (out exportFile) {
@@ -108,7 +115,7 @@ func packDir(path string) (out exportFile) {
 	out.Parameters = []importStruct{}
 	out.Tables = []importStruct{}
 
-	files, err := ioutil.ReadDir(path)
+	files, err := os.ReadDir(path)
 	if err != nil {
 		return
 	}
@@ -216,6 +223,7 @@ func encodeStd(path, fname string) (result importStruct) {
 	ext := filepath.Ext(fname)
 	name := fname[:len(fname)-len(ext)]
 	fpath := filepath.Join(path, fname)
+	result.FullPath = fpath
 	result.Name = name
 	result.Value = file2str(fpath)
 	result.Conditions = defaultCondition
@@ -223,7 +231,7 @@ func encodeStd(path, fname string) (result importStruct) {
 }
 
 func file2str(filename string) (str string) {
-	bs, err := ioutil.ReadFile(filename)
+	bs, err := os.ReadFile(filename)
 	if err != nil {
 		return
 	}
@@ -232,7 +240,7 @@ func file2str(filename string) (str string) {
 }
 
 func file2data(filename string) (result dataStruct) {
-	bs, err := ioutil.ReadFile(filename)
+	bs, err := os.ReadFile(filename)
 	if err != nil {
 		return
 	}

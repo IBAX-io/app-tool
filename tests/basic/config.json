@@ -1,6 +1,11 @@
 {
     "name": "Basic application",
-    "snippets": null,
+    "snippets": [
+        {
+            "Name": "snippet",
+            "Conditions": "ContractConditions(\"MainCondition\")"
+        }
+    ],
     "contracts": [
         {
             "Name": "Profile_Edit",
